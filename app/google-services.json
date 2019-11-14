@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "521365539888",
+    "firebase_url": "https://myengineeringpoint.firebaseio.com",
+    "project_id": "myengineeringpoint",
+    "storage_bucket": "myengineeringpoint.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521365539888:android:c66e22905d339e8c6631f5",
+        "android_client_info": {
+          "package_name": "com.example.myengineeringpoint"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521365539888-obj9ibth2pn8ip8teav089l39ip0m2ad.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7plSS0cPEvNwBxygRenTao-e04hq2KQE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521365539888-obj9ibth2pn8ip8teav089l39ip0m2ad.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

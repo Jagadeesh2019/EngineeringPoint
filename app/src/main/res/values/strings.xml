@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">MyEngineeringPoint</string>
+    <string name="app_name">VTUPoint</string>
+    <string name="app_title">VTUPoint</string>
+    <string name="app_sub_title">By MyEngineeringPoint</string>
 </resources>
