@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".HomeActivity">
+    tools:context=".activities.HomeActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/courses_card"
@@ -24,7 +24,7 @@
             android:id="@+id/syllabus_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="VTU All Scheme Engineering Syllabus"
+            android:text="VTU Engineering Syllabus"
             android:textStyle="bold"
             android:textSize="25sp"
             android:textColor="@android:color/black"
@@ -49,7 +49,7 @@
             android:id="@+id/question_paper_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="VTU All Scheme Engineering Question Papers"
+            android:text="VTU Engineering Question Papers"
             android:background="@android:color/holo_red_light"
             android:textStyle="bold"
             android:textColor="@android:color/black"
@@ -62,10 +62,10 @@
 
     <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/additionalMessage_textView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.8"
-            android:text="Additional Message from firebase configuration"
+            android:text="More resources under development...."
             android:textStyle="bold"
             android:textSize="18sp"
             android:textColor="@android:color/black"
