@@ -14,11 +14,11 @@
         android:layout_height="0dp"
         android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
+        android:stateListAnimator="@anim/card_animation"
         android:layout_margin="@dimen/dp_5"
         app:cardBackgroundColor="@color/colorPrimary"
         app:cardCornerRadius="@dimen/dp_5"
-        android:layout_weight="3"
-        android:stateListAnimator="@anim/card_animation">
+        android:layout_weight="3">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/syllabus_title"

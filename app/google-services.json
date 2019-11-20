@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "521365539888-vpvrpi95mr4epg5v8d9drsf01tn1cfhq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myengineeringpoint",
+            "certificate_hash": "ad5b9004493bd107a07edd5ad35f8755a5857903"
+          }
+        },
+        {
           "client_id": "521365539888-obj9ibth2pn8ip8teav089l39ip0m2ad.apps.googleusercontent.com",
           "client_type": 3
         }

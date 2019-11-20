@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/data_detail_list_item_card_view"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/dp_5"
+        android:layout_height="100dp"
+        android:elevation="@dimen/dp_5">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/sub_papers_layout_holder"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="@dimen/dp_10"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/subject_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Subject 1"
+                    android:textSize="20sp"
+                    android:padding="@dimen/dp_5"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/papers_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Papers : 100"
+                    android:padding="@dimen/dp_5"
+                    android:textSize="18sp"
+                    android:textStyle="normal"
+                    android:textColor="@android:color/darker_gray"/>
+
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/view_downloadAll_layout_holder"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_10"
+                android:layout_weight="0.5">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/get_papers_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Get Papers"
+                    android:layout_margin="@dimen/dp_5"
+                    android:textSize="16sp"
+                    android:padding="@dimen/dp_5"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:stateListAnimator="@anim/card_animation"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:background="@android:color/holo_green_light"/>
+
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

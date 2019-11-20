@@ -1,18 +1,18 @@
 package com.example.myengineeringpoint.activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.Window;
-import android.widget.Toast;
 
 import com.example.myengineeringpoint.R;
 import com.example.myengineeringpoint.models.HomeScreenModel;
-import com.example.myengineeringpoint.utils.CommonUtils;
-import com.example.myengineeringpoint.utils.Constants;
+import com.example.myengineeringpoint.utils.AppConstants;
 import com.example.myengineeringpoint.utils.FirebaseKeys;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,6 +33,7 @@ public class SplashActivity extends AppCompatActivity {
     public HomeScreenModel homeScreenModel;
     public AlertDialog.Builder alertBuilder;
     public boolean fetchStatus=true;
+    public ConnectivityManager connectivityManager;
 
 
 
@@ -64,7 +65,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void splashActivityLead(){
         //Check Internet Connectivity
-        if(checkInternetConnectivity()){
+        if(getInternetStatus()){
             //Toast.makeText(SplashActivity.this,"Internet True",Toast.LENGTH_SHORT).show();
 
             //Fetch and activate Remote configs
@@ -78,9 +79,9 @@ public class SplashActivity extends AppCompatActivity {
                     JSONObject home_Screen_data_object = (JSONObject)parser.parse(home_screen_json_data);
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                     HomeScreenModel homeScreenModel = new HomeScreenModel();
-                    homeScreenModel.setAdditional_message((String)home_Screen_data_object.get(Constants.ADDITIONAL_MESSAGE));
-                    homeScreenModel.setQuestion_papers_title((String)home_Screen_data_object.get(Constants.QUESTION_PAPERS_TITLE));
-                    homeScreenModel.setSyllabus_title((String)home_Screen_data_object.get(Constants.SYLLABUS_TITLE));
+                    homeScreenModel.setAdditional_message((String)home_Screen_data_object.get(AppConstants.ADDITIONAL_MESSAGE));
+                    homeScreenModel.setQuestion_papers_title((String)home_Screen_data_object.get(AppConstants.QUESTION_PAPERS_TITLE));
+                    homeScreenModel.setSyllabus_title((String)home_Screen_data_object.get(AppConstants.SYLLABUS_TITLE));
                     intent.putExtra(FirebaseKeys.HOME_SCREEN_JSON_DATA,homeScreenModel);
                     startActivity(intent);
                     finish();
@@ -105,10 +106,10 @@ public class SplashActivity extends AppCompatActivity {
             android.app.AlertDialog.Builder alertDialog =
                     new android.app.AlertDialog.Builder(SplashActivity.this);
             alertDialog.setCancelable(false);
-            alertDialog.setTitle(Constants.ENABLE_INTERNET_CONNECTION_MESSAGE);
+            alertDialog.setTitle(AppConstants.ENABLE_INTERNET_CONNECTION_MESSAGE);
             //alertDialog.setMessage("");
             //Action on YES
-            alertDialog.setPositiveButton(Constants.ALERT_DIALOG_BUTTON_YES, new DialogInterface.OnClickListener() {
+            alertDialog.setPositiveButton(AppConstants.ALERT_DIALOG_BUTTON_YES, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     //Launch settings
@@ -175,8 +176,8 @@ public class SplashActivity extends AppCompatActivity {
         android.app.AlertDialog.Builder firebaseConfigFethErrorDialog =
                 new android.app.AlertDialog.Builder(SplashActivity.this);
         firebaseConfigFethErrorDialog.setCancelable(false);
-        firebaseConfigFethErrorDialog.setTitle(Constants.SOMETHING_WENT_WRONG_MESSAGE);
-        firebaseConfigFethErrorDialog.setPositiveButton(Constants.ALERT_DIALOG_BUTTON_OK, new DialogInterface.OnClickListener() {
+        firebaseConfigFethErrorDialog.setTitle(AppConstants.SOMETHING_WENT_WRONG_MESSAGE);
+        firebaseConfigFethErrorDialog.setPositiveButton(AppConstants.ALERT_DIALOG_BUTTON_OK, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //Kill the app
@@ -188,9 +189,18 @@ public class SplashActivity extends AppCompatActivity {
 
 
 
-    public boolean checkInternetConnectivity(){
-        //if internet connection is enabled, return true else return false
-        return true;
+    public boolean getInternetStatus(){
+        connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager!=null){
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if(networkInfo!=null && networkInfo.isConnected()){
+                return true;
+            }else {
+                return false;
+            }
+        }else {
+            return false;
+        }
     }
 
 }

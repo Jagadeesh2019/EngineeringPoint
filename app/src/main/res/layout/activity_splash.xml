@@ -30,6 +30,7 @@
         android:id="@+id/app_sub_title"
         style="@style/AppTheme.NoActionBar.SplashActivityTheme"
         android:layout_marginTop="@dimen/dp_5"
+        android:textStyle="normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_sub_title"
