@@ -131,15 +131,15 @@ public class DataActivity extends AppCompatActivity {
                                                            +"\n"+"Sem :"+dataModel.getSem_list().get(spinner_sem.getSelectedItemPosition()));
 
                                                    intent.putExtra("Branch",(String)dataModel.getBranch_list().get(spinner_branch.getSelectedItemPosition()));
-                                                   intent.putExtra("Scheme",(String)dataModel.getScheme_list().get(spinner_branch.getSelectedItemPosition()));
-                                                   intent.putExtra("Sem",(String)dataModel.getSem_list().get(spinner_branch.getSelectedItemPosition()));
+                                                   intent.putExtra("Scheme",(String)dataModel.getScheme_list().get(spinner_scheme.getSelectedItemPosition()));
+                                                   intent.putExtra("Sem",(String)dataModel.getSem_list().get(spinner_sem.getSelectedItemPosition()));
 
                                                }else{
                                                    alertDialog.setMessage("Branch :"+dataModel.getBranch_list().get(spinner_branch.getSelectedItemPosition())
                                                            +"\n"+"Scheme :"+dataModel.getScheme_list().get(spinner_scheme.getSelectedItemPosition()));
 
                                                    intent.putExtra("Branch",(String)dataModel.getBranch_list().get(spinner_branch.getSelectedItemPosition()));
-                                                   intent.putExtra("Scheme",(String)dataModel.getScheme_list().get(spinner_branch.getSelectedItemPosition()));
+                                                   intent.putExtra("Scheme",(String)dataModel.getScheme_list().get(spinner_scheme.getSelectedItemPosition()));
                                                }
 
                                                //Action on YES

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +23,7 @@ public class DataDetailActivity extends AppCompatActivity {
     private ListView data_details_list_view;
     private MyAdapter data_details_list_adapter;
     public ArrayList<DataDetailsModel> dataDetailsArrayList;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,13 +100,20 @@ public class DataDetailActivity extends AppCompatActivity {
             AppCompatButton get_papers_button = v.findViewById(R.id.get_papers_button);
             subject_textView.setText(dataDetailsModel.getSubName());
             papers_textView.setText(dataDetailsModel.getSubPapersCount());
+
+
             get_papers_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     startActivity(new Intent(DataDetailActivity.this,GetPapersActivity.class));
+
                 }
             });
             return v;
         }
     }
 }
+
+
+
+
