@@ -9,10 +9,11 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_library"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_library"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.GetPapersActivity"></activity>
+        <activity android:name=".activities.ShowDataActivity"></activity>
+        <activity android:name=".activities.GetPapersActivity" />
         <activity android:name=".activities.DataActivity" />
         <activity android:name=".activities.DataDetailActivity" />
         <activity android:name=".activities.HomeActivity" />

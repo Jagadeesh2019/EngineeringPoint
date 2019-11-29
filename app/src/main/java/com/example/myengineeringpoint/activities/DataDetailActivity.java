@@ -12,9 +12,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.myengineeringpoint.R;
 import com.example.myengineeringpoint.models.DataDetailsModel;
+import com.example.myengineeringpoint.utils.AppConstants;
+import com.example.myengineeringpoint.utils.CommonUtils;
 
 import java.util.ArrayList;
 
@@ -24,6 +27,7 @@ public class DataDetailActivity extends AppCompatActivity {
     private MyAdapter data_details_list_adapter;
     public ArrayList<DataDetailsModel> dataDetailsArrayList;
     private ProgressDialog progressDialog;
+    private CommonUtils commonUtils = new CommonUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +109,12 @@ public class DataDetailActivity extends AppCompatActivity {
             get_papers_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(DataDetailActivity.this,GetPapersActivity.class));
+                    if(commonUtils.getInternetStatus(DataDetailActivity.this)){
+                        startActivity(new Intent(DataDetailActivity.this,GetPapersActivity.class));
+                    }else {
+                        commonUtils.showEnableInternetShortToast(DataDetailActivity.this);
+                    }
+
 
                 }
             });

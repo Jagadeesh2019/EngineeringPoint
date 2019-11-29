@@ -13,6 +13,7 @@ import android.view.Window;
 import com.example.myengineeringpoint.R;
 import com.example.myengineeringpoint.models.HomeScreenModel;
 import com.example.myengineeringpoint.utils.AppConstants;
+import com.example.myengineeringpoint.utils.CommonUtils;
 import com.example.myengineeringpoint.utils.FirebaseKeys;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,6 +35,7 @@ public class SplashActivity extends AppCompatActivity {
     public AlertDialog.Builder alertBuilder;
     public boolean fetchStatus=true;
     public ConnectivityManager connectivityManager;
+    public CommonUtils commonUtils = new CommonUtils();
 
 
 
@@ -65,7 +67,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void splashActivityLead(){
         //Check Internet Connectivity
-        if(getInternetStatus()){
+        if(commonUtils.getInternetStatus(SplashActivity.this)){
             //Toast.makeText(SplashActivity.this,"Internet True",Toast.LENGTH_SHORT).show();
 
             //Fetch and activate Remote configs
@@ -187,20 +189,5 @@ public class SplashActivity extends AppCompatActivity {
         //firebaseConfigFethErrorDialog.create().show();
     }
 
-
-
-    public boolean getInternetStatus(){
-        connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(connectivityManager!=null){
-            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-            if(networkInfo!=null && networkInfo.isConnected()){
-                return true;
-            }else {
-                return false;
-            }
-        }else {
-            return false;
-        }
-    }
 
 }

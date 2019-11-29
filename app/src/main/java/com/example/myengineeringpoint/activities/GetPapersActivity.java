@@ -8,8 +8,13 @@ import androidx.appcompat.widget.AppCompatTextView;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -18,6 +23,8 @@ import android.widget.Toast;
 
 import com.example.myengineeringpoint.R;
 import com.example.myengineeringpoint.models.GetPapersModel;
+import com.example.myengineeringpoint.utils.AppConstants;
+import com.example.myengineeringpoint.utils.CommonUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,12 +39,14 @@ import static android.os.Environment.DIRECTORY_DOWNLOADS;
 public class GetPapersActivity extends AppCompatActivity {
 
     private ListView hold_papers_listView;
-    public ArrayList<GetPapersModel> getPapersModelArrayList;
-    public MyAdapter myAdapter;
+    private ArrayList<GetPapersModel> getPapersModelArrayList;
+    private MyAdapter myAdapter;
     private ProgressDialog progressDialog;
     private FirebaseStorage firebaseStorage;
     private StorageReference mStorageRef;
     private StorageReference ref;
+    private ConnectivityManager connectivityManager;
+    private CommonUtils commonUtils = new CommonUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,19 +110,58 @@ public class GetPapersActivity extends AppCompatActivity {
             AppCompatTextView paper_title_textView = v.findViewById(R.id.papers_item_ll_paper_title);
             AppCompatTextView paper_sub_title_textView = v.findViewById(R.id.papers_item_ll_paper_sub_title);
             AppCompatButton paper_download_button = v.findViewById(R.id.papers_item_card_ll_download_button);
+            AppCompatButton paper_view_button = v.findViewById(R.id.papers_item_card_ll_view_button);
             subject_code_textView.setText(getPapersModel.getSubjectCode());
             paper_title_textView.setText(getPapersModel.getPaperName());
             paper_sub_title_textView.setText(getPapersModel.getPaperSubName());
 
+
+            paper_view_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(GetPapersActivity.this,ShowDataActivity.class));
+                }
+            });
+
+
             paper_download_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    downloadQuestionPaper();
+                    if(commonUtils.getInternetStatus(GetPapersActivity.this)){
+                        downloadQuestionPaper();
+                    }else {
+                        //alert dialog : NoInternetConnection
+
+                        android.app.AlertDialog.Builder alertDialog =
+                                new android.app.AlertDialog.Builder(GetPapersActivity.this);
+                        alertDialog.setCancelable(false);
+                        alertDialog.setTitle(AppConstants.ENABLE_INTERNET_CONNECTION_MESSAGE);
+                        //alertDialog.setMessage("");
+                        //Action on YES
+                        alertDialog.setPositiveButton(AppConstants.ALERT_DIALOG_BUTTON_YES, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Launch settings
+                                Intent intent = new Intent();
+                                intent.setAction(Settings.ACTION_SETTINGS);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+                        });
+                        android.app.AlertDialog alertDialog1 = alertDialog.create();
+                        alertDialog1.show();
+                    }
+
                 }
             });
+
+
+
             return v;
         }
     }
+
+
 
 
     private void createProgressDialog(){
@@ -166,6 +214,20 @@ public class GetPapersActivity extends AppCompatActivity {
         request.setDestinationInExternalFilesDir(context,destinationDirectory,fileName+fileExtension);
 
         downloadManager.enqueue(request);
+    }
+
+    private boolean getInternetStatus(){
+        connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager!=null){
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if(networkInfo!=null && networkInfo.isConnected()){
+                return true;
+            }else {
+                return false;
+            }
+        }else {
+            return false;
+        }
     }
 
 }

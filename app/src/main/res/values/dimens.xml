@@ -4,4 +4,5 @@
     <dimen name="dp_10">10dp</dimen>
     <dimen name="appTitleSize">28sp</dimen>
     <dimen name="appSubTitleSize">22sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

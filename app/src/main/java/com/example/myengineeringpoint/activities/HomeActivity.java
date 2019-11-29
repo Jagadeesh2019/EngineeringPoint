@@ -8,10 +8,12 @@ import androidx.cardview.widget.CardView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.myengineeringpoint.R;
 import com.example.myengineeringpoint.models.HomeScreenModel;
 import com.example.myengineeringpoint.utils.AppConstants;
+import com.example.myengineeringpoint.utils.CommonUtils;
 import com.example.myengineeringpoint.utils.FirebaseKeys;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
@@ -21,6 +23,7 @@ public class HomeActivity extends AppCompatActivity {
     private AppCompatTextView syllabus, qpapers, addmessage;
     private String syllabus_text,qpapers_text,addmessage_text;
     private CardView courseCard,qpapersCard;
+    private CommonUtils commonUtils= new CommonUtils();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,10 +46,14 @@ public class HomeActivity extends AppCompatActivity {
         courseCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, DataActivity.class);
-                intent.putExtra("title",syllabus.getText().toString());
-                intent.putExtra("data","Syllabus of");
-                startActivity(intent);
+                if(commonUtils.getInternetStatus(HomeActivity.this)){
+                    Intent intent = new Intent(HomeActivity.this, DataActivity.class);
+                    intent.putExtra("title",syllabus.getText().toString());
+                    intent.putExtra("data","Syllabus of");
+                    startActivity(intent);
+                }else {
+                    commonUtils.showEnableInternetShortToast(HomeActivity.this);
+                }
 
             }
         });
@@ -54,10 +61,15 @@ public class HomeActivity extends AppCompatActivity {
         qpapersCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, DataActivity.class);
-                intent.putExtra("title",qpapers.getText().toString());
-                intent.putExtra("data","QuestionPapers of");
-                startActivity(intent);
+                if(commonUtils.getInternetStatus(HomeActivity.this)){
+                    Intent intent = new Intent(HomeActivity.this, DataActivity.class);
+                    intent.putExtra("title",qpapers.getText().toString());
+                    intent.putExtra("data","QuestionPapers of");
+                    startActivity(intent);
+                }else {
+                    commonUtils.showEnableInternetShortToast(HomeActivity.this);
+                }
+
             }
         });
 

@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatSpinner;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import android.widget.Toast;
 import com.example.myengineeringpoint.R;
 import com.example.myengineeringpoint.models.DataModel;
 import com.example.myengineeringpoint.utils.AppConstants;
+import com.example.myengineeringpoint.utils.CommonUtils;
+import com.example.myengineeringpoint.utils.FireStoreCollectionNames;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -34,13 +37,11 @@ public class DataActivity extends AppCompatActivity {
     private AppCompatSpinner spinner_scheme,spinner_branch,spinner_sem;
     private String data,getDataButtonTitle;
     private AppCompatButton getDataButton;
-    private ArrayList scheme_list;
-    private ArrayList branch_list;
-    private ArrayList sem_list;
     private ArrayAdapter schemeAdapter,branchAdapter,semAdapter;
     private FirebaseFirestore db;
     private ProgressDialog progressDialog;
     private DataModel dataModel;
+    private CommonUtils commonUtils = new CommonUtils();
 
 
     @Override
@@ -59,7 +60,7 @@ public class DataActivity extends AppCompatActivity {
         //
         showProgressDialog();
 
-        db.collection("branch_year_sem")
+        db.collection(FireStoreCollectionNames.BRANCH_YEAR_SEM)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -81,6 +82,7 @@ public class DataActivity extends AppCompatActivity {
                                    spinner_branch = findViewById(R.id.select_branch);
                                    spinner_sem = findViewById(R.id.select_sem);
                                    getDataButton = findViewById(R.id.get_data_button);
+
 
 
                                    getDataButton.setText(dataModel.getGetDataButtonTitle());
@@ -148,7 +150,12 @@ public class DataActivity extends AppCompatActivity {
                                                    public void onClick(DialogInterface dialog, int which) {
                                                        //Fire FireBase Request
                                                        //For testing launch DataDetailActivity
-                                                       startActivity(intent);
+                                                       if(commonUtils.getInternetStatus(DataActivity.this)){
+                                                           startActivity(intent);
+                                                       }else {
+                                                           commonUtils.showEnableInternetShortToast(DataActivity.this);
+                                                       }
+
 
 
                                                    }

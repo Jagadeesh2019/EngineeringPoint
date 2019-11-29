@@ -53,25 +53,51 @@
                 android:textStyle="normal"/>
 
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/papers_item_card_ll_download_button"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/button_holder_ll"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Download paper"
-                android:textSize="15sp"
-                android:textAllCaps="false"
-                android:padding="@dimen/dp_5"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:layout_marginTop="@dimen/dp_10"
-                android:layout_marginBottom="@dimen/dp_10"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:stateListAnimator="@anim/card_animation"
-                android:textStyle="normal"
-                android:textColor="@android:color/white"
-                android:background="#007bff"/>
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/papers_item_card_ll_view_button"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="View paper"
+                    android:textSize="15sp"
+                    android:textAllCaps="false"
+                    android:padding="@dimen/dp_5"
+                   android:layout_margin="@dimen/dp_10"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:stateListAnimator="@anim/card_animation"
+                    android:textStyle="normal"
+                    android:textColor="#007bff"
+                    android:background="@android:color/white"/>
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/papers_item_card_ll_download_button"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Download paper"
+                    android:textSize="15sp"
+                    android:textAllCaps="false"
+                    android:padding="@dimen/dp_5"
+                    android:layout_margin="@dimen/dp_10"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:stateListAnimator="@anim/card_animation"
+                    android:textStyle="normal"
+                    android:textColor="@android:color/white"
+                    android:background="#007bff"/>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
 
 
