@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -12,9 +14,16 @@
         android:roundIcon="@drawable/ic_library"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-5736349587092868~3232615883"/>
+
         <activity android:name=".activities.ShowDataActivity"></activity>
         <activity android:name=".activities.GetPapersActivity" />
-        <activity android:name=".activities.DataActivity" />
+
+        <activity android:name=".activities.SelectBranchActivity">
+        </activity>
+
         <activity android:name=".activities.DataDetailActivity" />
         <activity android:name=".activities.HomeActivity" />
         <activity

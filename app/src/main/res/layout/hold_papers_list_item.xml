@@ -70,12 +70,12 @@
                     android:textAllCaps="false"
                     android:padding="@dimen/dp_5"
                    android:layout_margin="@dimen/dp_10"
-                    android:foreground="?android:attr/selectableItemBackground"
+                    android:elevation="1dp"
                     android:clickable="true"
                     android:stateListAnimator="@anim/card_animation"
                     android:textStyle="normal"
                     android:textColor="#007bff"
-                    android:background="@android:color/white"/>
+                    android:background="@drawable/view_resource_button_background"/>
 
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -84,17 +84,17 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Download paper"
+                    android:text="Download Resource"
                     android:textSize="15sp"
                     android:textAllCaps="false"
                     android:padding="@dimen/dp_5"
                     android:layout_margin="@dimen/dp_10"
-                    android:foreground="?android:attr/selectableItemBackground"
+                    android:elevation="1dp"
                     android:clickable="true"
                     android:stateListAnimator="@anim/card_animation"
                     android:textStyle="normal"
                     android:textColor="@android:color/white"
-                    android:background="#007bff"/>
+                    android:background="@drawable/get_resource_button_shape"/>
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>

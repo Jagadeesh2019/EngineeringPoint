@@ -8,11 +8,11 @@ import androidx.cardview.widget.CardView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.myengineeringpoint.R;
 import com.example.myengineeringpoint.models.HomeScreenModel;
 import com.example.myengineeringpoint.utils.AppConstants;
+import com.example.myengineeringpoint.utils.AppKeys;
 import com.example.myengineeringpoint.utils.CommonUtils;
 import com.example.myengineeringpoint.utils.FirebaseKeys;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -47,9 +47,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(commonUtils.getInternetStatus(HomeActivity.this)){
-                    Intent intent = new Intent(HomeActivity.this, DataActivity.class);
-                    intent.putExtra("title",syllabus.getText().toString());
-                    intent.putExtra("data","Syllabus of");
+                    Intent intent = new Intent(HomeActivity.this, SelectBranchActivity.class);
+                    intent.putExtra(AppKeys.KEY_TITLE,syllabus.getText().toString());
+                    intent.putExtra(AppKeys.KEY_DATA,AppConstants.DATA_SYLLABUS_OF);
                     startActivity(intent);
                 }else {
                     commonUtils.showEnableInternetShortToast(HomeActivity.this);
@@ -62,9 +62,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(commonUtils.getInternetStatus(HomeActivity.this)){
-                    Intent intent = new Intent(HomeActivity.this, DataActivity.class);
-                    intent.putExtra("title",qpapers.getText().toString());
-                    intent.putExtra("data","QuestionPapers of");
+                    Intent intent = new Intent(HomeActivity.this, SelectBranchActivity.class);
+                    intent.putExtra(AppKeys.KEY_TITLE,qpapers.getText().toString());
+                    intent.putExtra(AppKeys.KEY_DATA,AppConstants.DATA_QUESTION_PAPERS_OF);
                     startActivity(intent);
                 }else {
                     commonUtils.showEnableInternetShortToast(HomeActivity.this);

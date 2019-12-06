@@ -24,7 +24,13 @@ import android.widget.Toast;
 import com.example.myengineeringpoint.R;
 import com.example.myengineeringpoint.models.GetPapersModel;
 import com.example.myengineeringpoint.utils.AppConstants;
+import com.example.myengineeringpoint.utils.AppKeys;
 import com.example.myengineeringpoint.utils.CommonUtils;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdCallback;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -47,10 +53,18 @@ public class GetPapersActivity extends AppCompatActivity {
     private StorageReference ref;
     private ConnectivityManager connectivityManager;
     private CommonUtils commonUtils = new CommonUtils();
+    private String subCode,resourceType;
+    private RewardedAd rewardedAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //GetIntent From DataDetailsActivity
+
+        subCode = (String)getIntent().getExtras().get(AppKeys.KEY_SUBJECT_CODE);
+        resourceType = (String)getIntent().getExtras().get(AppKeys.KEY_RESOURCE_TYPE);
+
 
         setContentView(R.layout.activity_get_papers);
 
@@ -115,11 +129,28 @@ public class GetPapersActivity extends AppCompatActivity {
             paper_title_textView.setText(getPapersModel.getPaperName());
             paper_sub_title_textView.setText(getPapersModel.getPaperSubName());
 
+            paper_download_button.setText("Download "+resourceType);
+            paper_view_button.setText("View "+resourceType);
+
 
             paper_view_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(GetPapersActivity.this,ShowDataActivity.class));
+                    //startActivity(new Intent(GetPapersActivity.this,ShowDataActivity.class));
+                    //Send Paper URL with intent
+
+
+                    //load the ad
+                    loadARewardedAd();
+
+                    //Show RewardedVideoTestAd
+//
+//                    if(rewardedAd.isLoaded()){
+//
+//                    }else {
+//                        Toast.makeText(getApplicationContext(),"RewardedAd wasn't loaded",Toast.LENGTH_SHORT).show();
+//                    }
+
                 }
             });
 
@@ -185,12 +216,15 @@ public class GetPapersActivity extends AppCompatActivity {
         showProgressDialog();
         //Create FireStorage reference
         mStorageRef = firebaseStorage.getInstance().getReference();
-        ref = mStorageRef.child("/vtu_engineering_question_papers/civil/scheme_2002/sem3/10CV32/jan_2013_civil.pdf");
+        //"/vtu_engineering_question_papers/civil/scheme_2002/sem3/10CV32/jan_2013_civil.pdf"
+        ref = mStorageRef.
+                child(commonUtils.getVtuEngineeringQuestionPapersRemotePath
+                        ("civil","2002","sem3","10CV32","Papers","june_2012_civil.pdf"));
         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 String url = uri.toString();
-                downloadFiles(GetPapersActivity.this,"jan_2013_civil",".pdf",DIRECTORY_DOWNLOADS,url);
+                downloadFiles(GetPapersActivity.this,generateLocalFileName("june_2012_civil.pdf"),".pdf",DIRECTORY_DOWNLOADS,url);
                 dismissProgressDialog();
                 Toast.makeText(GetPapersActivity.this,"Download Success",Toast.LENGTH_SHORT).show();
             }
@@ -216,18 +250,68 @@ public class GetPapersActivity extends AppCompatActivity {
         downloadManager.enqueue(request);
     }
 
-    private boolean getInternetStatus(){
-        connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(connectivityManager!=null){
-            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-            if(networkInfo!=null && networkInfo.isConnected()){
-                return true;
-            }else {
-                return false;
-            }
-        }else {
-            return false;
-        }
+    private String generateLocalFileName(String remoteFileName){
+            return "vtupoint_"+remoteFileName.replace(".pdf","");
     }
+
+
+    private void loadARewardedAd(){
+
+        //Initialize RewardedAd Object
+        //rewardedAd = new RewardedAd(getApplicationContext(),getResources().getString(R.string.rewardedVideoADUnitId));
+        rewardedAd = new RewardedAd(getApplicationContext(),getResources().getString(R.string.rewardedVideoTestADUnitId));
+
+        Toast.makeText(getApplicationContext(),"ContolInStartLoadRewardedAd",Toast.LENGTH_SHORT).show();
+
+        RewardedAdLoadCallback rewardedAdLoadCallback = new RewardedAdLoadCallback(){
+            @Override
+            public void onRewardedAdLoaded() {
+                // Ad successfully loaded.
+                Toast.makeText(getApplicationContext(),"RewardedAdLoadedSuccessfullyHere",Toast.LENGTH_SHORT).show();
+                showRewardedAd();
+            }
+
+            @Override
+            public void onRewardedAdFailedToLoad(int errorCode) {
+                // Ad failed to load.
+                Toast.makeText(getApplicationContext(),"RewardedAdLoadFailureHere",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"ErrorCode is :"+errorCode,Toast.LENGTH_SHORT).show();
+            }
+        };
+        rewardedAd.loadAd(new AdRequest.Builder().build(),rewardedAdLoadCallback);
+        Toast.makeText(getApplicationContext(),"ContolInEndLoadRewardedAd",Toast.LENGTH_SHORT).show();
+    }
+
+
+    private void showRewardedAd(){
+        System.out.print("Control in ShowRewardedAd");
+
+        RewardedAdCallback rewardedAdCallback = new RewardedAdCallback() {
+
+            @Override
+            public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                Toast.makeText(getApplicationContext(),
+                        "RewardEarned : "+rewardItem.getAmount(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onRewardedAdOpened() {
+                Toast.makeText(getApplicationContext(),"VideAdOpened",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onRewardedAdClosed() {
+//                                super.onRewardedAdClosed();
+            }
+
+            @Override
+            public void onRewardedAdFailedToShow(int i) {
+//                                super.onRewardedAdFailedToShow(i);
+                Toast.makeText(getApplication(),"onRewardedAdFailedToShow :"+i,Toast.LENGTH_SHORT).show();
+            }
+        };
+        rewardedAd.show(GetPapersActivity.this, rewardedAdCallback);
+    }
+
 
 }

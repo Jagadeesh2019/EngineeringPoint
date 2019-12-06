@@ -3,11 +3,11 @@ package com.example.myengineeringpoint.models;
 public class DataDetailsModel {
 
     private String subName;
-    private String subPapersCount;
+    private String subCode;
 
-    public DataDetailsModel(String subName,String subPapersCount){
+    public DataDetailsModel(String subName,String subCode){
         this.subName = subName;
-        this.subPapersCount = subPapersCount;
+        this.subCode = subCode;
     }
 
     public String getSubName() {
@@ -18,11 +18,11 @@ public class DataDetailsModel {
         this.subName = subName;
     }
 
-    public String getSubPapersCount() {
-        return subPapersCount;
+    public String getSubCode() {
+        return subCode;
     }
 
-    public void setSubPapersCount(String subPapersCount) {
-        this.subPapersCount = subPapersCount;
+    public void setSubCode(String subCode) {
+        this.subCode = subCode;
     }
 }

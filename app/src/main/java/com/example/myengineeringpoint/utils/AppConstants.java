@@ -15,5 +15,17 @@ public class AppConstants {
     public static  final String ADDITIONAL_MESSAGE="additional_message";
     public static final String SUBJECT_SELECT_DIALOG_HEADER="Are you sure you're looking for";
     public static final String PLEASE_SELECT_ALL_THE_FIELDS = "Please Select All the Fields";
+    public static final String baseStorageURL = "gs://myengineeringpoint.appspot.com";
+    public static final String vtuEngineeringQuestionPapersFolder = "/vtu_engineering_question_papers";
+    public static final String remoteFolderSyllabus = "syllabus";
+    public static final String remoteFolderQPapers = "qpapers";
+    public static final String remoteFolderNotes = "notes";
+    public static final String REQUEST_PATH_TEXT = "requestPath";
+    public static final String DATA_SYLLABUS_OF="Syllabus of";
+    public static final String DATA_QUESTION_PAPERS_OF="QuestionPapers of";
+    public static final String SYLLABUS="Syllabus";
+    public static final String PAPERS="Papers";
+    public static final String TEXT_GET_PAPERS = "Get Papers";
+    public static final String TEXT_GET_SYLLABUS = "Get Syllabus";
 
 }

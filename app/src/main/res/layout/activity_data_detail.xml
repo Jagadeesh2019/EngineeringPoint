@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLight"
     tools:context=".activities.DataDetailActivity">
 
   <ListView
@@ -14,7 +15,6 @@
       android:padding="@dimen/dp_5"
       android:scrollbars="none"
       android:divider="@null">
-
   </ListView>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

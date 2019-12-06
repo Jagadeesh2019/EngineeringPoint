@@ -4,14 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.appcompat.widget.LinearLayoutCompat;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,36 +18,58 @@ import android.widget.Toast;
 import com.example.myengineeringpoint.R;
 import com.example.myengineeringpoint.models.DataModel;
 import com.example.myengineeringpoint.utils.AppConstants;
+import com.example.myengineeringpoint.utils.AppKeys;
 import com.example.myengineeringpoint.utils.CommonUtils;
 import com.example.myengineeringpoint.utils.FireStoreCollectionNames;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 
 import java.util.ArrayList;
 import java.util.Map;
 
-public class DataActivity extends AppCompatActivity {
+public class SelectBranchActivity extends AppCompatActivity {
 
     private AppCompatSpinner spinner_scheme,spinner_branch,spinner_sem;
+    private LinearLayoutCompat linearLayoutCompat;
     private String data,getDataButtonTitle;
     private AppCompatButton getDataButton;
     private ArrayAdapter schemeAdapter,branchAdapter,semAdapter;
     private FirebaseFirestore db;
     private ProgressDialog progressDialog;
     private DataModel dataModel;
+    private FirebaseRemoteConfig firebaseRemoteConfig;
     private CommonUtils commonUtils = new CommonUtils();
+    private AdView adView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setTheme(R.style.ActivityThemeRed);
 
-        String title = getIntent().getExtras().getString("title").replace(" ","");
-        data = getIntent().getExtras().getString("data");
+
+        //Initialize Ad here
+        InitializeBannerAd();
+
+        //Setup Activity Data Firebase
+        firebaseRemoteConfig = commonUtils.setUpFireBaseRemoteConfig();
+
+
+
+        String title = getIntent().getExtras().getString(AppKeys.KEY_TITLE).replace(" ","");
+        data = getIntent().getExtras().getString(AppKeys.KEY_DATA);
+
         getSupportActionBar().setTitle(title);
         dataModel = new DataModel();
 
@@ -60,6 +80,8 @@ public class DataActivity extends AppCompatActivity {
         //
         showProgressDialog();
 
+
+        //Set Data to Spinners from remoteConfigs
         db.collection(FireStoreCollectionNames.BRANCH_YEAR_SEM)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -73,16 +95,18 @@ public class DataActivity extends AppCompatActivity {
                                    dataModel.setSem_list((ArrayList)mDocumentData.get(DataModel.SEM_KEY));
                                    dataModel.setGetDataButtonTitle((String)mDocumentData.get(DataModel.BUTTON_TITLE_KEY));
 
-
                                     dismissProgressDialog();
 
-                                   setContentView(R.layout.activity_data);
+                                   setContentView(R.layout.activity_select_branch);
 
+                                   //Load BannerAd Here
+                                   loadBannerAd();
+
+                                   linearLayoutCompat = findViewById(R.id.outer_linear_layout);
                                    spinner_scheme = findViewById(R.id.select_scheme);
                                    spinner_branch = findViewById(R.id.select_branch);
                                    spinner_sem = findViewById(R.id.select_sem);
                                    getDataButton = findViewById(R.id.get_data_button);
-
 
 
                                    getDataButton.setText(dataModel.getGetDataButtonTitle());
@@ -96,6 +120,7 @@ public class DataActivity extends AppCompatActivity {
                                    spinner_sem.setAdapter(semAdapter);
 
 
+                                   //Branch Spinner OnClickListener
                                    spinner_branch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                        @Override
                                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -113,10 +138,11 @@ public class DataActivity extends AppCompatActivity {
                                    });
 
 
+                                   //GetData Onclick Listener
                                    getDataButton.setOnClickListener(new View.OnClickListener() {
                                        @Override
                                        public void onClick(View v) {
-                                           final Intent intent = new Intent(DataActivity.this,DataDetailActivity.class);
+                                           final Intent intent = new Intent(SelectBranchActivity.this,DataDetailActivity.class);
                                            if((spinner_branch.getSelectedItemPosition()!=0 &&
                                                    spinner_scheme.getSelectedItemPosition()!=0 &&
                                                    spinner_sem.getSelectedItemPosition()!=0) ||
@@ -124,24 +150,26 @@ public class DataActivity extends AppCompatActivity {
 
 
                                                android.app.AlertDialog.Builder alertDialog =
-                                                       new android.app.AlertDialog.Builder(DataActivity.this);
+                                                       new android.app.AlertDialog.Builder(SelectBranchActivity.this);
                                                alertDialog.setCancelable(false);
                                                alertDialog.setTitle(AppConstants.SUBJECT_SELECT_DIALOG_HEADER+" "+data+" :");
+
                                                if(spinner_sem.getVisibility()!=View.GONE){
+                                                   //Here P-Cycle or C-Cycle is not selected
                                                    alertDialog.setMessage("Branch :"+dataModel.getBranch_list().get(spinner_branch.getSelectedItemPosition())
                                                            +"\n"+"Scheme :"+dataModel.getScheme_list().get(spinner_scheme.getSelectedItemPosition())
                                                            +"\n"+"Sem :"+dataModel.getSem_list().get(spinner_sem.getSelectedItemPosition()));
 
-                                                   intent.putExtra("Branch",(String)dataModel.getBranch_list().get(spinner_branch.getSelectedItemPosition()));
-                                                   intent.putExtra("Scheme",(String)dataModel.getScheme_list().get(spinner_scheme.getSelectedItemPosition()));
-                                                   intent.putExtra("Sem",(String)dataModel.getSem_list().get(spinner_sem.getSelectedItemPosition()));
+                                                   intent.putExtra(AppKeys.KEY_BRANCH,(String)dataModel.getBranch_list().get(spinner_branch.getSelectedItemPosition()));
+                                                   intent.putExtra(AppKeys.KEY_SCHEME,(String)dataModel.getScheme_list().get(spinner_scheme.getSelectedItemPosition()));
+                                                   intent.putExtra(AppKeys.KEY_SEM,(String)dataModel.getSem_list().get(spinner_sem.getSelectedItemPosition()));
 
                                                }else{
                                                    alertDialog.setMessage("Branch :"+dataModel.getBranch_list().get(spinner_branch.getSelectedItemPosition())
                                                            +"\n"+"Scheme :"+dataModel.getScheme_list().get(spinner_scheme.getSelectedItemPosition()));
 
-                                                   intent.putExtra("Branch",(String)dataModel.getBranch_list().get(spinner_branch.getSelectedItemPosition()));
-                                                   intent.putExtra("Scheme",(String)dataModel.getScheme_list().get(spinner_scheme.getSelectedItemPosition()));
+                                                   intent.putExtra(AppKeys.KEY_BRANCH,(String)dataModel.getBranch_list().get(spinner_branch.getSelectedItemPosition()));
+                                                   intent.putExtra(AppKeys.KEY_SCHEME,(String)dataModel.getScheme_list().get(spinner_scheme.getSelectedItemPosition()));
                                                }
 
                                                //Action on YES
@@ -150,12 +178,17 @@ public class DataActivity extends AppCompatActivity {
                                                    public void onClick(DialogInterface dialog, int which) {
                                                        //Fire FireBase Request
                                                        //For testing launch DataDetailActivity
-                                                       if(commonUtils.getInternetStatus(DataActivity.this)){
+                                                       if(commonUtils.getInternetStatus(SelectBranchActivity.this)){
+                                                           if(data.equalsIgnoreCase(AppConstants.DATA_SYLLABUS_OF)){
+                                                               intent.putExtra(AppKeys.KEY_RESOURCE_TYPE,AppConstants.SYLLABUS);
+                                                           }else if(data.equalsIgnoreCase(AppConstants.DATA_QUESTION_PAPERS_OF)){
+                                                               intent.putExtra(AppKeys.KEY_RESOURCE_TYPE,AppConstants.PAPERS);
+                                                           }
                                                            startActivity(intent);
-                                                       }else {
-                                                           commonUtils.showEnableInternetShortToast(DataActivity.this);
-                                                       }
 
+                                                       }else {
+                                                           commonUtils.showEnableInternetShortToast(SelectBranchActivity.this);
+                                                       }
 
 
                                                    }
@@ -177,12 +210,12 @@ public class DataActivity extends AppCompatActivity {
                                    });
 
 
-                                   //Toast.makeText(DataActivity.this,"Scheme List : "+scheme_list,Toast.LENGTH_LONG).show();
+                                   //Toast.makeText(SelectBranchActivity.this,"Scheme List : "+scheme_list,Toast.LENGTH_LONG).show();
                                }
                            }else{
                                dismissProgressDialog();
 
-                               Toast.makeText(DataActivity.this,
+                               Toast.makeText(SelectBranchActivity.this,
                                        "Error getting documents :"+task.getException(),Toast.LENGTH_SHORT).show();
                            }
                     }
@@ -206,6 +239,23 @@ public class DataActivity extends AppCompatActivity {
 
     private void dismissProgressDialog(){
         progressDialog.dismiss();
+    }
+
+    private void InitializeBannerAd(){
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+                //Toast.makeText(getApplicationContext(),"Banner Ad Initialization Success",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void loadBannerAd(){
+        //LoadAd
+        adView = findViewById(R.id.bannerAdView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
 
 }

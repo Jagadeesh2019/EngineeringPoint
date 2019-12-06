@@ -8,7 +8,12 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.myengineeringpoint.R;
 import com.example.myengineeringpoint.models.HomeScreenModel;
@@ -26,6 +31,9 @@ import org.json.simple.parser.JSONParser;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.ViewPropertyAnimatorCompat;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -36,6 +44,11 @@ public class SplashActivity extends AppCompatActivity {
     public boolean fetchStatus=true;
     public ConnectivityManager connectivityManager;
     public CommonUtils commonUtils = new CommonUtils();
+    public static final int STARTUP_DELAY = 300;
+    public static final int ANIM_ITEM_DURATION = 1000;
+    public static final int ITEM_DELAY = 300;
+    private boolean animationStarted = false;
+
 
 
 
@@ -57,12 +70,12 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 splashActivityLead();
             }
-        },2000);
-
+        },3000);
 
 
 
     }
+
 
 
     private void splashActivityLead(){
@@ -122,7 +135,7 @@ public class SplashActivity extends AppCompatActivity {
                 }
             });
             //Action on NO
-            alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            alertDialog.setNegativeButton(AppConstants.ALERT_DIALOG_BUTTON_NO, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     finish();
@@ -171,8 +184,9 @@ public class SplashActivity extends AppCompatActivity {
             }else {
                 return false;
             }
-
     }
+
+
 
     public void showSomethingWentWrong(){
         android.app.AlertDialog.Builder firebaseConfigFethErrorDialog =
@@ -188,6 +202,7 @@ public class SplashActivity extends AppCompatActivity {
         });
         //firebaseConfigFethErrorDialog.create().show();
     }
+
 
 
 }

@@ -45,6 +45,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+    implementation 'com.google.android.gms:play-services-ads:18.3.0'
 }
 
 configurations.all {

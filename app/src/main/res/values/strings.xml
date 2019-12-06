@@ -3,4 +3,10 @@
     <string name="app_title">VTUPoint</string>
     <string name="app_sub_title">By MyEngineeringPoint</string>
     <string name="title_activity_show_data">ShowDataActivity</string>
+    <string name="adMobAppId">ca-app-pub-5736349587092868~3232615883</string>
+    <string name="bannerTestAdUnitId">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="bannerAdUnitId">ca-app-pub-5736349587092868/2221080254</string>
+    <string name="rewardedVideoADUnitId">ca-app-pub-5736349587092868/3608090212</string>
+    <string name="rewardedVideoTestADUnitId">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="rewardedVideoADUnitId2">ca-app-pub-5736349587092868/7511676206</string>
 </resources>

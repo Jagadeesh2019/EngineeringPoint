@@ -71,7 +71,7 @@ public class ShowDataActivity extends AppCompatActivity {
         //gs://myengineeringpoint.appspot.com/vtu_engineering_question_papers/civil/scheme_2002/sem3/10CV32
         ref = mStorageRef.child("/vtu_engineering_question_papers/civil/scheme_2002/sem3/10CV32/jan_2013_civil.pdf");
         try{
-            final File localFile = File.createTempFile("qpapers","pdf");
+            final File localFile = File.createTempFile("tempFile","pdf");
             ref.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
