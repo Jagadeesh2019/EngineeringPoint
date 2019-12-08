@@ -16,6 +16,7 @@ public class AppKeys {
     public static final String KEY_SUBJECT_CODE = "SubjectCode";
     public static final String KEY_TEMP_FILE="tempFile";
     public static final String KEY_JSON_FORMAT="json";
+    public static final String KEY_PAPER_TITLE="PaperTitle";
 
     //Branches
     public static final String KEY_BRANCH_CSE="cse";

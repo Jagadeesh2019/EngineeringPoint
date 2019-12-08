@@ -7,13 +7,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.SelectBranchActivity"
-    android:padding="15dp">
+    tools:context=".activities.SelectBranchActivity">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9"
+        android:padding="15dp"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatSpinner
@@ -77,7 +77,7 @@
         android:layout_weight="1"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        ads:adSize="BANNER"
+        ads:adSize="SMART_BANNER"
         ads:adUnitId="@string/bannerTestAdUnitId">
 
     </com.google.android.gms.ads.AdView>

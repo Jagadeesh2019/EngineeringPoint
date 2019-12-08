@@ -23,10 +23,12 @@ import android.widget.Toast;
 
 import com.example.myengineeringpoint.R;
 import com.example.myengineeringpoint.models.GetPapersModel;
+import com.example.myengineeringpoint.utils.AdvertisementUtils;
 import com.example.myengineeringpoint.utils.AppConstants;
 import com.example.myengineeringpoint.utils.AppKeys;
 import com.example.myengineeringpoint.utils.CommonUtils;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
@@ -52,13 +54,25 @@ public class GetPapersActivity extends AppCompatActivity {
     private StorageReference mStorageRef;
     private StorageReference ref;
     private ConnectivityManager connectivityManager;
-    private CommonUtils commonUtils = new CommonUtils();
+    private CommonUtils commonUtils;
     private String subCode,resourceType;
     private RewardedAd rewardedAd;
+    private AdView bannerAdView;
+    private AdvertisementUtils advertisementUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Create an object of CommonUtils
+        commonUtils = new CommonUtils(GetPapersActivity.this);
+
+        //Create an Object of Advertisement Class
+        advertisementUtils = new AdvertisementUtils(GetPapersActivity.this);
+        advertisementUtils.initializeBannerAd();
+
+        //load InterstitialAd
+        advertisementUtils.loadInterstitialAd();
 
         //GetIntent From DataDetailsActivity
 
@@ -67,6 +81,10 @@ public class GetPapersActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_get_papers);
+
+        bannerAdView = findViewById(R.id.getPapers_activity_bannerAdView);
+
+        advertisementUtils.loadBannerAd(bannerAdView);
 
         hold_papers_listView = findViewById(R.id.hold_papers_listView);
 
@@ -120,8 +138,8 @@ public class GetPapersActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             GetPapersModel getPapersModel = getPapersModelArrayList.get(position);
             View v = getLayoutInflater().inflate(R.layout.hold_papers_list_item,null);
-            AppCompatTextView subject_code_textView = v.findViewById(R.id.papers_item_ll_banner);
-            AppCompatTextView paper_title_textView = v.findViewById(R.id.papers_item_ll_paper_title);
+            final AppCompatTextView subject_code_textView = v.findViewById(R.id.papers_item_ll_banner);
+            final AppCompatTextView paper_title_textView = v.findViewById(R.id.papers_item_ll_paper_title);
             AppCompatTextView paper_sub_title_textView = v.findViewById(R.id.papers_item_ll_paper_sub_title);
             AppCompatButton paper_download_button = v.findViewById(R.id.papers_item_card_ll_download_button);
             AppCompatButton paper_view_button = v.findViewById(R.id.papers_item_card_ll_view_button);
@@ -136,12 +154,13 @@ public class GetPapersActivity extends AppCompatActivity {
             paper_view_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //startActivity(new Intent(GetPapersActivity.this,ShowDataActivity.class));
+
+                    Intent intent = new Intent(GetPapersActivity.this,ShowDataActivity.class);
+                    intent.putExtra(AppKeys.KEY_PAPER_TITLE,paper_title_textView.getText().toString());
+                    intent.putExtra(AppKeys.KEY_SUBJECT_CODE,subject_code_textView.getText().toString());
+                    startActivity(intent);
                     //Send Paper URL with intent
 
-
-                    //load the ad
-                    loadARewardedAd();
 
                     //Show RewardedVideoTestAd
 //
@@ -193,27 +212,8 @@ public class GetPapersActivity extends AppCompatActivity {
     }
 
 
-
-
-    private void createProgressDialog(){
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Downloading your file...");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setProgress(0);
-    }
-
-    private void showProgressDialog(){
-        createProgressDialog();
-        progressDialog.show();
-    }
-
-    private void dismissProgressDialog(){
-        progressDialog.dismiss();
-    }
-
     private void downloadQuestionPaper(){
-        showProgressDialog();
+        commonUtils.showProgressDialog();
         //Create FireStorage reference
         mStorageRef = firebaseStorage.getInstance().getReference();
         //"/vtu_engineering_question_papers/civil/scheme_2002/sem3/10CV32/jan_2013_civil.pdf"
@@ -225,13 +225,13 @@ public class GetPapersActivity extends AppCompatActivity {
             public void onSuccess(Uri uri) {
                 String url = uri.toString();
                 downloadFiles(GetPapersActivity.this,generateLocalFileName("june_2012_civil.pdf"),".pdf",DIRECTORY_DOWNLOADS,url);
-                dismissProgressDialog();
+                commonUtils.dismissProgressDialog();
                 Toast.makeText(GetPapersActivity.this,"Download Success",Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                dismissProgressDialog();
+                commonUtils.dismissProgressDialog();
                 Toast.makeText(GetPapersActivity.this,"Download Failure ",Toast.LENGTH_SHORT).show();
             }
         });

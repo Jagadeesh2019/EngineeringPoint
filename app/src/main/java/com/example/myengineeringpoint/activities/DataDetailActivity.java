@@ -18,9 +18,12 @@ import android.widget.Toast;
 
 import com.example.myengineeringpoint.R;
 import com.example.myengineeringpoint.models.DataDetailsModel;
+import com.example.myengineeringpoint.utils.AdvertisementUtils;
 import com.example.myengineeringpoint.utils.AppKeys;
 import com.example.myengineeringpoint.utils.CommonUtils;
 import com.example.myengineeringpoint.utils.FireBaseStorageFileName;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -46,8 +49,10 @@ public class DataDetailActivity extends AppCompatActivity {
     public ArrayList<DataDetailsModel> dataDetailsArrayList;
     private FirebaseFirestore db;
     private ProgressDialog progressDialog;
-    private CommonUtils commonUtils = new CommonUtils();
+    private CommonUtils commonUtils;
     private FirebaseStorage firebaseStorage;
+    private AdvertisementUtils advertisementUtils;
+    private AdView bannerAdView;
     private StorageReference mStorageRef;
     private StorageReference ref,gsRef;
     public static String remoteJsonDataString="Default";
@@ -56,6 +61,15 @@ public class DataDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //BannerAd is placed
+        //Create an Object of AdvertisementUtils
+        advertisementUtils = new AdvertisementUtils(DataDetailActivity.this);
+        advertisementUtils.initializeBannerAd();
+
+        //Create an Object of CommonUtils
+        commonUtils = new CommonUtils(DataDetailActivity.this);
+
         String activityTitle = "";
          branch = (String)getIntent().getExtras().get(AppKeys.KEY_BRANCH);
          scheme = (String)getIntent().getExtras().get(AppKeys.KEY_SCHEME);
@@ -74,7 +88,7 @@ public class DataDetailActivity extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         //ShowProgressDialog
-        commonUtils.showProgressDialog(DataDetailActivity.this);
+        commonUtils.showProgressDialog();
 
 
         mAuth.signInAnonymously().addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -163,7 +177,13 @@ public class DataDetailActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_data_detail);
 
+        bannerAdView = findViewById(R.id.dataDetail_bannerAdView);
+//        AdSize adSize = new AdSize(300,100);
+//        bannerAdView.setAdSize(adSize);
+        advertisementUtils.loadBannerAd(bannerAdView);
+
         data_details_list_view = findViewById(R.id.data_details_list_view);
+
 
         //RetrieveDataFromObject
         JSONObject branchData = (JSONObject)dataObject.get(branch);
@@ -175,7 +195,8 @@ public class DataDetailActivity extends AppCompatActivity {
 
         for(int i=0;i<semArray.size();i++){
             JSONObject innerObject = (JSONObject)semArray.get(i);
-            DataDetailsModel dataDetailsModel = new DataDetailsModel((String)innerObject.get("Title"),(String)innerObject.get("sub_code"));
+            DataDetailsModel dataDetailsModel = new DataDetailsModel((String)innerObject.get(DataDetailsModel.DataDetailsConstants.TITLE),
+                    (String)innerObject.get(DataDetailsModel.DataDetailsConstants.SUB_CODE));
             dataDetailsArrayList.add(dataDetailsModel);
             data_details_list_adapter.notifyDataSetChanged();
         }

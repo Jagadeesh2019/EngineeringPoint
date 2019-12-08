@@ -6,10 +6,14 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.myengineeringpoint.R;
+import com.example.myengineeringpoint.utils.AdvertisementUtils;
+import com.example.myengineeringpoint.utils.AppConstants;
+import com.example.myengineeringpoint.utils.AppKeys;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,16 +33,30 @@ public class ShowDataActivity extends AppCompatActivity {
     private FirebaseStorage firebaseStorage;
     private StorageReference mStorageRef;
     private StorageReference ref,gsRef;
+    private AdvertisementUtils advertisementUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Create an object of AdvertisementUtils
+        advertisementUtils = new AdvertisementUtils(ShowDataActivity.this);
+        //Load InterstitialAd
+        advertisementUtils.loadInterstitialAd();
+
+        String title = getIntent().getExtras().get(AppKeys.KEY_PAPER_TITLE).toString();
+        String subject_code = getIntent().getExtras().getString(AppKeys.KEY_SUBJECT_CODE).toUpperCase();
         setContentView(R.layout.activity_show_data);
 
-        view_title_holder = findViewById(R.id.view_title_holder);
-        view_image_holder = findViewById(R.id.view_image_holder);
-        pdfView = (PDFView) findViewById(R.id.pdfView);
+        getSupportActionBar().setTitle(subject_code);
 
+
+        view_title_holder = findViewById(R.id.view_title_holder);
+
+        view_title_holder.setText(title);
+
+        view_image_holder = findViewById(R.id.view_image_holder);
+        pdfView = findViewById(R.id.pdfView);
 
         downloadQuestionPaper();
 
@@ -77,6 +95,9 @@ public class ShowDataActivity extends AppCompatActivity {
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                     pdfView.fromFile(localFile).load();
                     dismissProgressDialog();
+                    //Show InterstitialAd
+                    advertisementUtils.showInterstitialAd();
+
                //Toast.makeText(ShowDataActivity.this,"Loading Success",Toast.LENGTH_SHORT).show();
 
                 }
@@ -85,12 +106,16 @@ public class ShowDataActivity extends AppCompatActivity {
                 public void onFailure(@NonNull Exception e) {
                     //Display our image to notify the user
                     dismissProgressDialog();
+                    //Show InterstitialAd
+                    advertisementUtils.showInterstitialAd();
                     Toast.makeText(ShowDataActivity.this,"Loading Failure",Toast.LENGTH_SHORT).show();
                 }
             });
         }catch (Exception e){
             System.out.print("CreateTempFile Exception :"+e);
             dismissProgressDialog();
+            //Show InterstitialAd
+            advertisementUtils.showInterstitialAd();
             Toast.makeText(ShowDataActivity.this,"Loading Failure",Toast.LENGTH_SHORT).show();
         }
 

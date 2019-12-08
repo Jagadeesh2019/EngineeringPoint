@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:id="@+id/super_linearLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.QuizHomeActivity">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/quiz_board_linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        android:padding="@dimen/dp_10"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/questionView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text=""
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/appSubTitleSize"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="4" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/optionsHolder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:padding="@dimen/dp_10"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/option1View"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="1dp"
+                android:padding="20dp"
+                android:text=""
+                android:background="@drawable/spinner_white_corenerd_background"
+                android:layout_marginBottom="15dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/option2View"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:elevation="1dp"
+                android:text=""
+                android:background="@drawable/spinner_white_corenerd_background"
+                android:layout_marginBottom="15dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/option3View"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:elevation="1dp"
+                android:text=""
+                android:background="@drawable/spinner_white_corenerd_background"
+                android:layout_marginBottom="15dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/option4View"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/spinner_white_corenerd_background"
+                android:elevation="1dp"
+                android:text=""
+                android:padding="20dp" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/quiz_home_activity_bannerAdView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/bannerTestAdUnitId">
+
+    </com.google.android.gms.ads.AdView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -37,6 +37,11 @@ public class CommonUtils {
     private FirebaseStorage firebaseStorage;
     public String remoteJsonDataString;
     private boolean fetchStatus;
+    private Context context;
+
+    public CommonUtils(Context context){
+        this.context = context;
+    }
 
 
     public FirebaseRemoteConfig setUpFireBaseRemoteConfig(){
@@ -124,16 +129,16 @@ public class CommonUtils {
     }
 
 
-    private void createProgressDialog(Context context){
-        progressDialog = new ProgressDialog(context);
+    private void createProgressDialog(){
+        progressDialog = new ProgressDialog(this.context);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Fetching Data From Server");
+        progressDialog.setMessage("Loading you data..");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setProgress(0);
     }
 
-    public void showProgressDialog(Context context){
-        createProgressDialog(context);
+    public void showProgressDialog(){
+        createProgressDialog();
         progressDialog.show();
     }
 

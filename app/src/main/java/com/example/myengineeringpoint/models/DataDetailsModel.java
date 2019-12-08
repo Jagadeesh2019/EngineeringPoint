@@ -25,4 +25,11 @@ public class DataDetailsModel {
     public void setSubCode(String subCode) {
         this.subCode = subCode;
     }
+
+
+
+    public static class DataDetailsConstants{
+        public static String TITLE= "Title";
+        public static String SUB_CODE = "sub_code";
+    }
 }

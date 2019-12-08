@@ -17,12 +17,12 @@ import android.widget.Toast;
 
 import com.example.myengineeringpoint.R;
 import com.example.myengineeringpoint.models.DataModel;
+import com.example.myengineeringpoint.utils.AdvertisementUtils;
 import com.example.myengineeringpoint.utils.AppConstants;
 import com.example.myengineeringpoint.utils.AppKeys;
 import com.example.myengineeringpoint.utils.CommonUtils;
 import com.example.myengineeringpoint.utils.FireStoreCollectionNames;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -49,8 +49,9 @@ public class SelectBranchActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private DataModel dataModel;
     private FirebaseRemoteConfig firebaseRemoteConfig;
-    private CommonUtils commonUtils = new CommonUtils();
+    private CommonUtils commonUtils;
     private AdView adView;
+    private AdvertisementUtils advertisementUtils;
 
 
     @Override
@@ -58,9 +59,17 @@ public class SelectBranchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //setTheme(R.style.ActivityThemeRed);
 
+        //Create an Object of commonUtils
+         commonUtils = new CommonUtils(SelectBranchActivity.this);
+
+
+        //Create an object of AdvertisementUtils by passing context to it
+        advertisementUtils = new AdvertisementUtils(SelectBranchActivity.this);
 
         //Initialize Ad here
-        InitializeBannerAd();
+        advertisementUtils.initializeBannerAd();
+        //LoadInterstitialAd
+        advertisementUtils.loadInterstitialAd();
 
         //Setup Activity Data Firebase
         firebaseRemoteConfig = commonUtils.setUpFireBaseRemoteConfig();
@@ -73,12 +82,15 @@ public class SelectBranchActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(title);
         dataModel = new DataModel();
 
-        //CreateProgressDialog
-        createProgressDialog();
+        //Create and show progressDialog
+
+        //Do not use getApplicationContext() while calling the dialog from other components of the project :
+        //instead user ActivityName.this
+
+        commonUtils.showProgressDialog();
+
         //CreateFireStoreInstance
         db = FirebaseFirestore.getInstance();
-        //
-        showProgressDialog();
 
 
         //Set Data to Spinners from remoteConfigs
@@ -95,19 +107,19 @@ public class SelectBranchActivity extends AppCompatActivity {
                                    dataModel.setSem_list((ArrayList)mDocumentData.get(DataModel.SEM_KEY));
                                    dataModel.setGetDataButtonTitle((String)mDocumentData.get(DataModel.BUTTON_TITLE_KEY));
 
-                                    dismissProgressDialog();
-
                                    setContentView(R.layout.activity_select_branch);
-
-                                   //Load BannerAd Here
-                                   loadBannerAd();
 
                                    linearLayoutCompat = findViewById(R.id.outer_linear_layout);
                                    spinner_scheme = findViewById(R.id.select_scheme);
                                    spinner_branch = findViewById(R.id.select_branch);
                                    spinner_sem = findViewById(R.id.select_sem);
                                    getDataButton = findViewById(R.id.get_data_button);
+                                   adView = findViewById(R.id.bannerAdView);
 
+                                   //Load BannerAd Here
+                                   advertisementUtils.loadBannerAd(adView);
+
+                                   commonUtils.dismissProgressDialog();
 
                                    getDataButton.setText(dataModel.getGetDataButtonTitle());
 
@@ -213,7 +225,7 @@ public class SelectBranchActivity extends AppCompatActivity {
                                    //Toast.makeText(SelectBranchActivity.this,"Scheme List : "+scheme_list,Toast.LENGTH_LONG).show();
                                }
                            }else{
-                               dismissProgressDialog();
+                               commonUtils.dismissProgressDialog();
 
                                Toast.makeText(SelectBranchActivity.this,
                                        "Error getting documents :"+task.getException(),Toast.LENGTH_SHORT).show();
@@ -225,37 +237,9 @@ public class SelectBranchActivity extends AppCompatActivity {
 
     }
 
-    private void createProgressDialog(){
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Fetching Data From Server");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setProgress(0);
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        advertisementUtils.showInterstitialAd();
     }
-
-    private void showProgressDialog(){
-        progressDialog.show();
-    }
-
-    private void dismissProgressDialog(){
-        progressDialog.dismiss();
-    }
-
-    private void InitializeBannerAd(){
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-                //Toast.makeText(getApplicationContext(),"Banner Ad Initialization Success",Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-    private void loadBannerAd(){
-        //LoadAd
-        adView = findViewById(R.id.bannerAdView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
-    }
-
 }

@@ -5,16 +5,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/colorPrimaryLight"
     tools:context=".activities.DataDetailActivity">
 
-  <ListView
-      android:id="@+id/data_details_list_view"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:padding="@dimen/dp_5"
-      android:scrollbars="none"
-      android:divider="@null">
-  </ListView>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9">
+
+        <ListView
+            android:id="@+id/data_details_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp_5"
+            android:scrollbars="none"
+            android:divider="@null">
+        </ListView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/dataDetail_bannerAdView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/bannerTestAdUnitId">
+
+    </com.google.android.gms.ads.AdView>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

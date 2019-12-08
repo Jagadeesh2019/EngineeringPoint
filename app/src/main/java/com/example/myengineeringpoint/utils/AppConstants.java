@@ -13,6 +13,7 @@ public class AppConstants {
     public static  final String QUESTION_PAPERS_TITLE="question_papers_title";
     public static  final String SYLLABUS_TITLE="syllabus_title";
     public static  final String ADDITIONAL_MESSAGE="additional_message";
+    public static final String QUIZ_TITLE="quiz_title";
     public static final String SUBJECT_SELECT_DIALOG_HEADER="Are you sure you're looking for";
     public static final String PLEASE_SELECT_ALL_THE_FIELDS = "Please Select All the Fields";
     public static final String baseStorageURL = "gs://myengineeringpoint.appspot.com";
@@ -27,5 +28,6 @@ public class AppConstants {
     public static final String PAPERS="Papers";
     public static final String TEXT_GET_PAPERS = "Get Papers";
     public static final String TEXT_GET_SYLLABUS = "Get Syllabus";
+
 
 }

@@ -43,7 +43,7 @@ public class SplashActivity extends AppCompatActivity {
     public AlertDialog.Builder alertBuilder;
     public boolean fetchStatus=true;
     public ConnectivityManager connectivityManager;
-    public CommonUtils commonUtils = new CommonUtils();
+    public CommonUtils commonUtils;
     public static final int STARTUP_DELAY = 300;
     public static final int ANIM_ITEM_DURATION = 1000;
     public static final int ITEM_DELAY = 300;
@@ -57,6 +57,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
+
+        commonUtils = new CommonUtils(SplashActivity.this);
 
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder().
@@ -89,15 +91,8 @@ public class SplashActivity extends AppCompatActivity {
                 //Toast.makeText(SplashActivity.this,"Fetch Firebase Configs True",Toast.LENGTH_SHORT).show();
                 //Fetch the remoteconfig values and pass it to next(Home) activity
                 try{
-                    String home_screen_json_data = mFirebaseRemoteConfig.getString(FirebaseKeys.HOME_SCREEN_JSON_DATA);
-                    JSONParser parser = new JSONParser();
-                    JSONObject home_Screen_data_object = (JSONObject)parser.parse(home_screen_json_data);
+
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                    HomeScreenModel homeScreenModel = new HomeScreenModel();
-                    homeScreenModel.setAdditional_message((String)home_Screen_data_object.get(AppConstants.ADDITIONAL_MESSAGE));
-                    homeScreenModel.setQuestion_papers_title((String)home_Screen_data_object.get(AppConstants.QUESTION_PAPERS_TITLE));
-                    homeScreenModel.setSyllabus_title((String)home_Screen_data_object.get(AppConstants.SYLLABUS_TITLE));
-                    intent.putExtra(FirebaseKeys.HOME_SCREEN_JSON_DATA,homeScreenModel);
                     startActivity(intent);
                     finish();
 

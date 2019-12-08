@@ -5,17 +5,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/colorPrimaryLight"
     tools:context=".activities.GetPapersActivity">
 
-    <ListView
-        android:id="@+id/hold_papers_listView"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:layout_margin="@dimen/dp_5"
-        android:divider="@null">
+        android:layout_height="0dp"
+        android:layout_weight="9">
 
-    </ListView>
+        <ListView
+            android:id="@+id/hold_papers_listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:layout_margin="@dimen/dp_5"
+            android:divider="@null">
+
+        </ListView>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/getPapers_activity_bannerAdView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/bannerTestAdUnitId">
+
+    </com.google.android.gms.ads.AdView>
+
+
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>

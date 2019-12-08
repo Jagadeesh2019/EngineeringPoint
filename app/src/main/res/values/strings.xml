@@ -9,4 +9,6 @@
     <string name="rewardedVideoADUnitId">ca-app-pub-5736349587092868/3608090212</string>
     <string name="rewardedVideoTestADUnitId">ca-app-pub-3940256099942544/5224354917</string>
     <string name="rewardedVideoADUnitId2">ca-app-pub-5736349587092868/7511676206</string>
+    <string name="interstitialADUnitId">ca-app-pub-5736349587092868/4630679223</string>
+    <string name="interstitialTestADUnitId">ca-app-pub-3940256099942544/1033173712</string>
 </resources>

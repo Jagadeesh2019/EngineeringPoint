@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:padding="@dimen/dp_10"
+    tools:context=".activities.QuizGameOverActivity">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/game_over_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Game Over"
+        android:textSize="@dimen/appTitleSize"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:padding="20dp"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_gravity="center"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/total_questions_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Questions :"
+        android:textStyle="normal"
+        android:textColor="@android:color/black"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:padding="20dp"
+        android:textSize="@dimen/appSubTitleSize"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/correct_answers_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Correct Answers :"
+        android:textStyle="normal"
+        android:textColor="@color/colorGreenPrimaryDark"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:padding="20dp"
+        android:textSize="@dimen/appSubTitleSize"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/wrong_answers_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Wrong Answers :"
+        android:textStyle="normal"
+        android:textColor="@color/colorRedPrimaryDark"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:padding="20dp"
+        android:textSize="@dimen/appSubTitleSize"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/replay_buttonView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Replay"
+        android:textStyle="normal"
+        android:background="@drawable/spinner_white_corenerd_background"
+        android:textColor="@android:color/black"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:padding="20dp"
+        android:textSize="@dimen/appSubTitleSize"
+        />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
