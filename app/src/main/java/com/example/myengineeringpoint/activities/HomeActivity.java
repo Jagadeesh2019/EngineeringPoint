@@ -7,6 +7,7 @@ import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
@@ -30,13 +31,18 @@ public class HomeActivity extends AppCompatActivity {
     private CommonUtils commonUtils;
     private AdView bannerAdView;
     private AdvertisementUtils advertisementUtils;
+    private HomeScreenModel homeScreenModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
 
         //Create an Object of CommonUtils Class
         commonUtils= new CommonUtils(HomeActivity.this);
+
+        commonUtils.showProgressDialog();
+
+        setContentView(R.layout.activity_home);
+
         //Create an Object of AdvertisementUtils
         advertisementUtils = new AdvertisementUtils(HomeActivity.this);
 
@@ -61,14 +67,32 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(HomeActivity.this,"Couldn't load ActivityTitle",Toast.LENGTH_SHORT).show();
         }
 
-        mFirebaseRemoteConfig = commonUtils.setUpFireBaseRemoteConfig();
-        Gson gson = new Gson();
-        HomeScreenModel homeScreenModel = gson.fromJson(mFirebaseRemoteConfig.getString(FirebaseKeys.HOME_SCREEN_JSON_DATA),HomeScreenModel.class);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mFirebaseRemoteConfig = commonUtils.setUpFireBaseRemoteConfig();
+                Gson gson = new Gson();
+                homeScreenModel = gson.fromJson(mFirebaseRemoteConfig.getString(FirebaseKeys.HOME_SCREEN_JSON_DATA),HomeScreenModel.class);
+                setData();
+                commonUtils.dismissProgressDialog();
+            }
+        },3500);
 
-        quiz.setText(homeScreenModel.getQuiz_title());
-        syllabus.setText(homeScreenModel.getSyllabus_title());
-        qpapers.setText(homeScreenModel.getQuestion_papers_title());
-        addmessage.setText(homeScreenModel.getAdditional_message());
+
+
+    }
+
+    private void setData(){
+        String quiz_text = (String)homeScreenModel.getQuiz_title();
+        String syllabus_text = (String)homeScreenModel.getSyllabus_title();
+        String qpapers_text = (String)homeScreenModel.getQuestion_papers_title();
+        String addmessage_text = (String)homeScreenModel.getAdditional_message();
+
+
+        quiz.setText(quiz_text);
+        syllabus.setText(syllabus_text);
+        qpapers.setText(qpapers_text);
+        addmessage.setText(addmessage_text);
 
 
 
@@ -115,9 +139,6 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
-
-
-
     }
 
 }

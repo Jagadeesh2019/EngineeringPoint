@@ -13,7 +13,7 @@ import com.example.myengineeringpoint.R;
 public class QuizGameOverActivity extends AppCompatActivity {
 
     AppCompatTextView gameOverText, numberOfQuestionsText, numberOfCorrectAnswersText, numberOfWrongAnswersText;
-    AppCompatButton replayButton;
+    AppCompatButton homeButton,replayButton,nextButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +24,23 @@ public class QuizGameOverActivity extends AppCompatActivity {
         numberOfQuestionsText = findViewById(R.id.total_questions_textView);
         numberOfCorrectAnswersText = findViewById(R.id.correct_answers_textView);
         numberOfWrongAnswersText = findViewById(R.id.wrong_answers_textView);
+        homeButton = findViewById(R.id.home_buttonView);
         replayButton = findViewById(R.id.replay_buttonView);
+        nextButton = findViewById(R.id.next_level_buttonView);
+
 
         numberOfQuestionsText.setText("Total Questions : "+ getIntent().getExtras().get("TotalQuestions").toString());
         numberOfCorrectAnswersText.setText("Total Correct Answers : "+ getIntent().getExtras().get("TotalCorrectAnswers").toString());
         numberOfWrongAnswersText.setText("Total Wrong Answers : "+ getIntent().getExtras().get("TotalWrongAnswers").toString());
+
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(QuizGameOverActivity.this,HomeActivity.class));
+                finish();
+            }
+        });
+
 
         replayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,6 +49,17 @@ public class QuizGameOverActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(QuizGameOverActivity.this,QuizHomeActivity.class));
+                finish();
+            }
+        });
+
+
 
     }
 }

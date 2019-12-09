@@ -4,15 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Toast;
 
 import com.example.myengineeringpoint.R;
@@ -44,7 +49,7 @@ public class SelectBranchActivity extends AppCompatActivity {
     private LinearLayoutCompat linearLayoutCompat;
     private String data,getDataButtonTitle;
     private AppCompatButton getDataButton;
-    private ArrayAdapter schemeAdapter,branchAdapter,semAdapter;
+    private CustomSpinnerAdapter schemeAdapter,branchAdapter,semAdapter;
     private FirebaseFirestore db;
     private ProgressDialog progressDialog;
     private DataModel dataModel;
@@ -123,9 +128,9 @@ public class SelectBranchActivity extends AppCompatActivity {
 
                                    getDataButton.setText(dataModel.getGetDataButtonTitle());
 
-                                   schemeAdapter = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_spinner_item,dataModel.getScheme_list());
-                                   branchAdapter = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_spinner_item,dataModel.getBranch_list());
-                                   semAdapter = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_spinner_item,dataModel.getSem_list());
+                                   schemeAdapter = new CustomSpinnerAdapter(getApplicationContext(),dataModel.getScheme_list());
+                                   branchAdapter = new CustomSpinnerAdapter(getApplicationContext(),dataModel.getBranch_list());
+                                   semAdapter = new CustomSpinnerAdapter(getApplicationContext(),dataModel.getSem_list());
 
                                    spinner_scheme.setAdapter(schemeAdapter);
                                    spinner_branch.setAdapter(branchAdapter);
@@ -237,9 +242,49 @@ public class SelectBranchActivity extends AppCompatActivity {
 
     }
 
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         advertisementUtils.showInterstitialAd();
+    }
+
+
+    //Spinner CustomAdapter
+
+    public class CustomSpinnerAdapter extends BaseAdapter{
+
+        Context context;
+        ArrayList<String> items;
+        LayoutInflater inflter;
+
+        public CustomSpinnerAdapter(Context applicationContext, ArrayList<String> items) {
+            this.context = applicationContext;
+            this.items = items;
+            inflter = (LayoutInflater.from(applicationContext));
+        }
+
+        @Override
+        public int getCount() {
+            return items.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return items.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            convertView = inflter.inflate(R.layout.spinner_list_item,null);
+            AppCompatTextView spinnerItemTextView = convertView.findViewById(R.id.spinner_item_textView);
+            spinnerItemTextView.setText(items.get(position));
+            return convertView;
+        }
     }
 }
